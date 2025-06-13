@@ -7,7 +7,7 @@ Alarma personal que uso para estudiar
 ### Modo de uso
 
 Instalador:
-- [Descargar instalador](https://github.com/perseoq/alarm/blob/main/v1.0/alarm.py)
+- [Descargar instalador](https://raw.githubusercontent.com/perseoq/alarm/refs/heads/main/v1.0/alarm-alarm-installer.sh)
 
 Ejecutar
 ```sh
