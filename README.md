@@ -8,7 +8,7 @@ Alarma personal que uso para estudiar
 
 Descargar el archivo:
 ```sh
-curl -L -o alarm-alarm-v1.2.tar.xz https://github.com/perseoq/alarm/releases/download/study.alarm/alarm-alarm-v1.2.tar.xz
+curl -L -o alarm-alarm-v1.2.tar.xz https://github.com/perseoq/alarm/releases/download/study.alarm/alarm-alarm.tar.xz
 ```
 
 Instalar el paquete:
