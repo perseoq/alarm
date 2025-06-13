@@ -23,14 +23,21 @@ class AlarmClock(QWidget):
         self.init_ui()
         self.start_timer()
 
-        
+    
+  
 
     def init_ui(self):
+        def get_resource_path(relative_path):
+            """Retorna la ruta al archivo ya sea en modo desarrollo o empaquetado con PyInstaller."""
+            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+            return os.path.join(base_path, relative_path)  
         # ======= RELOJ: HORA ACTUAL =======
         lbl_actual = QLabel("HORA ACTUAL")
         lbl_actual.setStyleSheet("font-weight: bold;")
-        font_id = QFontDatabase.addApplicationFont("fonts/font.ttf")
-        ubuntu_id = QFontDatabase.addApplicationFont("fonts/ubuntu.ttf")
+        fuente1 = get_resource_path("fonts/font.ttf")
+        fuente2 = get_resource_path("fonts/ubuntu.ttf")
+        font_id = QFontDatabase.addApplicationFont(fuente1)
+        ubuntu_id = QFontDatabase.addApplicationFont(fuente2)
         if font_id != -1:
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
             custom_font = QFont(font_family, 70, QFont.Bold)
@@ -98,7 +105,7 @@ class AlarmClock(QWidget):
         self.btn_detener.clicked.connect(self.detener_alarma)
 
         right = QVBoxLayout()
-        right.addSpacing(40)
+        right.addSpacing(50)
         right.addWidget(lbl_minutos)
         right.addWidget(self.spin_minutos)
         right.setSpacing(10)
@@ -121,10 +128,19 @@ class AlarmClock(QWidget):
         self.setLayout(layout)
 
     def load_sounds(self):
+
+        def get_resource_path(relative_path):
+            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+            return os.path.join(base_path, relative_path)
+
         self.sound_combo.clear()
-        if not os.path.exists("sounds"):
-            os.makedirs("sounds")
-        for file in os.listdir("sounds"):
+        
+        sounds_dir = get_resource_path("sounds")
+
+        if not os.path.exists(sounds_dir):
+            os.makedirs(sounds_dir)  # Sólo útil fuera de PyInstaller
+
+        for file in os.listdir(sounds_dir):
             if file.endswith(".mp3"):
                 self.sound_combo.addItem(file)
 
@@ -157,7 +173,7 @@ class AlarmClock(QWidget):
 
     def activar_alerta(self):
         self.is_alarm_active = False
-        self.alarm_display.setText("¡ALARM!")
+        self.alarm_display.setText("ALARM!")
         self.reproducir_sonido()
         self.btn_cancelar.show()
         self.btn_activar.hide()
@@ -169,11 +185,13 @@ class AlarmClock(QWidget):
         self.btn_activar.show()
 
     def reproducir_sonido(self):
-        sonido = self.sound_combo.currentText()
-        if sonido:
-            ruta = os.path.join("sounds", sonido)
-            pygame.mixer.music.load(ruta)
-            pygame.mixer.music.play(loops=-1)
+        def get_resource_path(relative_path):
+            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+            return os.path.join(base_path, relative_path)
+        file_name = self.sound_combo.currentText()
+        sound_path = get_resource_path(f"sounds/{file_name}")
+        pygame.mixer.music.load(sound_path)
+        pygame.mixer.music.play(loops=-1)
 
 
 if __name__ == "__main__":
