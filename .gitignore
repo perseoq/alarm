@@ -2,3 +2,6 @@
 *.pyc
 env/
 seti/
+alarm.spec
+dist/
+build/

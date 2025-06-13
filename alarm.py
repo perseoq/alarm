@@ -7,7 +7,12 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import QTimer, QTime, Qt
 from PySide6.QtGui import QFontDatabase, QFont
 import pygame
+from PySide6.QtGui import QIcon
 
+def get_resource_path(relative_path):
+    """Retorna la ruta al archivo ya sea en modo desarrollo o empaquetado con PyInstaller."""
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, relative_path) 
 
 class AlarmClock(QWidget):
     def __init__(self):
@@ -15,6 +20,7 @@ class AlarmClock(QWidget):
         pygame.mixer.init()
 
         self.setWindowTitle("Alarma")
+        self.setWindowIcon(QIcon(get_resource_path("clock.ico")))
         self.setFixedSize(510, 370)
         self.setStyleSheet("background-color: #95AD81;")
 
@@ -27,10 +33,7 @@ class AlarmClock(QWidget):
   
 
     def init_ui(self):
-        def get_resource_path(relative_path):
-            """Retorna la ruta al archivo ya sea en modo desarrollo o empaquetado con PyInstaller."""
-            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
-            return os.path.join(base_path, relative_path)  
+
         # ======= RELOJ: HORA ACTUAL =======
         lbl_actual = QLabel("HORA ACTUAL")
         lbl_actual.setStyleSheet("font-weight: bold;")
@@ -129,9 +132,6 @@ class AlarmClock(QWidget):
 
     def load_sounds(self):
 
-        def get_resource_path(relative_path):
-            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
-            return os.path.join(base_path, relative_path)
 
         self.sound_combo.clear()
         
@@ -185,9 +185,7 @@ class AlarmClock(QWidget):
         self.btn_activar.show()
 
     def reproducir_sonido(self):
-        def get_resource_path(relative_path):
-            base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
-            return os.path.join(base_path, relative_path)
+
         file_name = self.sound_combo.currentText()
         sound_path = get_resource_path(f"sounds/{file_name}")
         pygame.mixer.music.load(sound_path)
